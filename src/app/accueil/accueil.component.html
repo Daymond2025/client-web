@@ -1,0 +1,273 @@
+
+<div class="w-screen  mb-[100px] bg-[#F7FBFE] ">
+    <!-- <p-scrollpanel [style]="{ width: '100%', height: '1000px' }"> -->
+      <div class="bg-white shadow-md rounded-sm flex flex-col gap-1">
+        <div class="shadow-md bg-white flex justify-between items-center px-5 py-2 ">
+          <div>DAYMOND</div>
+          <div class="flex gap-3">
+            <p-button icon="pi pi-cart-plus" [rounded]="true" [text]="true" severity="contrast" />
+            <p-button icon="pi pi-share-alt" [rounded]="true" [text]="true" severity="contrast" />
+          </div>
+        </div>
+        <p-image [src]="produit?.product?.images[0]" class="w-full" alt="Image" [preview]="true" />
+        <div class="p-2 flex gap-2 overflow-x-auto w-screen" >
+          <div *ngFor="let image of produit?.product?.images; let i = index">
+            <div class="w-[5rem] h-[5rem] rounded-sm bg-contain bg-no-repeat" [style.background-image]="'url(' + image + ')'"></div>  
+          </div>
+        </div>
+      </div>
+    
+      <div class="bg-white shadow-md rounded-md flex flex-col gap-2 p-4 m-2">
+        <div>{{produit?.title}}</div>
+        <div class="text-gray-400 text-md">{{produit?.sub_title}}</div>
+        <div class="text-[#1050FF]">{{produit?.price | number:'1.0-0'}} FCFA</div>
+        <div class="flex flex-col gap-0 mt-3">
+          <div class="flex gap-2">
+            <div class="flex-none text-sm text-gray-400">Livraison express</div>
+            <div class="grow"> <p-divider /> </div>
+          </div>
+          <div class="text-gray-400"> Abidjan = {{produit?.product?.price_delivery?.city | number:'1.0-0'}} FCFA - Hors Abidjan = {{produit?.product?.price_delivery?.no_city | number:'1.0-0'}} FCFA</div>
+        </div>
+        
+      </div>
+      <div class="bg-white shadow-md rounded-sm flex flex-col gap-2 m-2">
+        <div class="px-4 mt-3">Description</div>
+        <p-divider></p-divider>
+        <p class="p-4 whitespace-pre-wra" [innerHTML]="replaceText(produit?.description)"  >
+         
+        </p>
+      </div>
+    <!-- </p-scrollpanel> -->
+  
+  </div>
+  <div class="bg-white fixed inset-x-0 bottom-0 w-full p-5  flex flex-col gap-3 rounded-t-xl shadow-[1px_1px_6px_6px_#bdbdbd]">
+
+    <div class="flex gap-5 justify-between w-full">
+      <div class="flex-none">
+        <a [href]="'tel:+225'+produit?.phone_number"><p-button icon="pi pi-phone" aria-label="Save" severity="info" [rounded]="true" styleClass="" /></a>
+        
+      </div>
+    
+      <div class="grow">
+        <p-button label="Je passe la commande" (click)="openDrawer()" [rounded]="true" styleClass="" [style]="{ 'width': '100%' , 'background': '#FF9700' , 'border-color': '#FF9700'}" />
+      </div>
+    
+      <div class="flex-none">
+        <a [href]="'https://wa.me/+225' + produit?.phone_number" target="_blank">
+          <p-button icon="pi pi-whatsapp" aria-label="Save" [rounded]="true" styleClass="" [style]="{ 'background': '#00a884' , 'border-color': '#00a884'}" />
+        </a>
+        
+      </div>
+    </div>
+   
+  
+  </div>
+  
+  <p-drawer [(visible)]="visible"  position="bottom" styleClass="rounded-t-xl h-3/4" closable="false">
+    
+    <ng-template #header>
+      <div class="flex flex-col justify-center items-center w-full">
+        <div class="flex justify-between items-center w-full">
+            <div><p-button
+              [disabled]="cpt==0" [style]="{'color': '#FF9700'}" 
+              (click)="produit.product.colors != null || produit.product.sizes != null ? gereCompteur(-1) : gereCompteur(-2)" 
+              icon="pi pi-angle-left" [text]="true" aria-label="Retour" [rounded]="true" styleClass="" /></div>
+            <div *ngIf="cpt<2" class="text-center font-semibold w-full pr-4 mb-2">
+              PASSER UNE COMMANDE ET PAYER A LA LIVRAISON
+          </div>
+          <div *ngIf="cpt==2" class="text-center font-semibold w-full">
+            RECAPITULATIF DE LA COMMANDE
+          </div>
+          <div></div>
+        </div>
+          
+          <div class="w-10 ledivider"> <p-divider [style]="{'margin':'0'}" ></p-divider> </div>
+          <div class="text-xs text-center mt-5" *ngIf="cpt==0">Renseignez Vos informations de livraison</div>
+          <div class="text-xs text-center mt-5" *ngIf="cpt==1">Sélectionner les spécificités de préférence</div>
+      </div>
+  </ng-template>
+    <div [formGroup]="itemForm" class="h-full">
+      <!-- <div class="flex flex-col h-full justify-between"> -->
+        <div class="flex flex-col gap-10 rounded-md shadow-md bg-[#FCFCFC] py-5 px-4" *ngIf="cpt==0">
+          <p-select [options]="villes" [(ngModel)]="selectedVille" formControlName="city_id" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="On vous livre ou ?" class="w-full md:w-56">
+              <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2">
+                      <div>{{ selectedOption.name }}</div>
+                  </div>
+              </ng-template>
+              <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                      <div>{{ country.name }}</div>
+                  </div>
+              </ng-template>
+          </p-select>      
+        
+            <p-floatlabel>
+              <input pInputText id="over_label" [(ngModel)]="contact" formControlName="phone_number" autocomplete="off" class="w-full" />
+              <label for="over_label">Votre numéro de téléphone</label>
+            </p-floatlabel>
+  
+            <p-floatlabel>
+              <input pInputText id="over_label" [(ngModel)]="leNom" formControlName="name" autocomplete="off" class="w-full" />
+              <label for="over_label">Votre nom a mettre sur la facture</label>
+          </p-floatlabel>
+
+          <div class="flex items-center border-b-1 gap-2 border-gray p-2">
+            <div class="font-bold w-2/3 text-[12px]">Combien de pièces voulez-vous</div>
+            <div class="w-1/3 flex items-center gap-2">
+                <i class="pi pi-minus-circle text-[#FF9700]" (click)="gereQte(-1)" *ngIf="qte>1" ></i>
+                <i class="pi pi-minus-circle text-gray-400" *ngIf="qte==1"  ></i>
+  
+                <input style="width: 60px;text-align: center;" pInputText [(ngModel)]="qte" formControlName="quantity" placeholder="Qte" />
+                <i class="pi pi-plus-circle text-[#FF9700]" (click)="gereQte(+1)"></i>  
+            </div>
+            
+          </div>
+  
+          <div class="text-xs mt-16 text-center w-full">Paiement a la livraison</div>
+  
+      
+        </div>
+  
+        <div class="flex flex-col gap-10 rounded-md shadow-md bg-[#FCFCFC] py-5 px-4" *ngIf="cpt==1">
+  
+          
+  
+            <p-select [options]="couleurs"
+            [(ngModel)]="selectedCouleur"
+              formControlName="color" 
+              [filter]="true" 
+                [showClear]="true"
+                placeholder="Quelle couleur voulez-vous ?" 
+                class="w-full md:w-56">
+          </p-select> 
+  
+          <p-select [options]="tailles"
+            [(ngModel)]="selectedTaille"
+              formControlName="size" 
+              [filter]="true" 
+                [showClear]="true"
+                placeholder="Quelle taille voulez-vous ?" 
+                class="w-full md:w-56">
+          </p-select> 
+  
+          <div class="text-xs mt-16 text-center w-full">Paiement a la livraison</div>
+  
+        </div>
+  
+        <div class="flex flex-col gap-10 " *ngIf="cpt==2">
+  
+          <div class="flex flex-col gap-2 text-sm rounded-md shadow-md bg-[#FCFCFC] py-5 px-4">
+  
+            <div class="flex gap-2">
+              <div class="h-[5rem] w-[5rem] rounded-md bg-no-repeat bg-contain flex-none" 
+              [style.background-image]="'url(' + produit?.product?.images[0] + ')'"></div>
+              <div class="grow flex flex-col justify-between ">
+                <div>{{produit?.title}}</div>
+                <div class="flex justify-between">
+                  <div class="w-1/2 text-[#FF9700]">Neuf</div>
+                  <div class="w-1/2 flex items-center gap-2">
+                    <i class="pi pi-minus-circle text-[#FF9700] text-sm" (click)="gereQte(-1)" *ngIf="qte>1" ></i>
+                <i class="pi pi-minus-circle text-gray-400 text-sm" *ngIf="qte==1"  ></i>
+  
+                <input style="width: 40px;text-align: center;" pInputText [(ngModel)]="qte" formControlName="quantity" placeholder="Qte" />
+                <i class="pi pi-plus-circle text-[#FF9700] text-sm" (click)="gereQte(+1)"></i>   
+                </div>
+                  
+                </div>
+              </div>
+            </div>
+  
+            <p-divider></p-divider>
+  
+            <div class="flex justify-between">
+              <div class="text-gray-400">Couleur</div>
+              <div>{{selectedCouleur}}</div>
+            </div>
+  
+            <div class="flex justify-between">
+              <div class="text-gray-400">Taille</div>
+              <div>{{selectedTaille}}</div>
+            </div>
+  
+            <div class="flex justify-between text-[#FF9700]">
+              <div >Quantité</div>
+              <div>{{qte}}</div>
+            </div>
+  
+            <div class="flex justify-between">
+              <div class="text-gray-400">Prix</div>
+              <div>{{produit?.price | number:'1.0-0'}} FCFA</div>
+            </div>
+  
+            <div class="flex justify-between">
+              <div class="text-gray-400">Livraison <span>{{selectedVille?.name}}</span> </div>
+              <div>{{selectedVille?.name == "Abidjan" ? produit?.product?.price_delivery?.city : produit?.product?.price_delivery?.no_city}}</div>
+            </div>
+
+            <p-divider></p-divider>
+  
+            <div class="flex justify-between text-[#FF9700]">
+              <div >A payer</div>
+              <div>
+                {{
+                  produit?.price * qte 
+                  + 
+                  (selectedVille?.name == "Abidjan" ? produit?.product?.price_delivery?.city : produit?.product?.price_delivery?.no_city )
+                  | number:'1.0-0' }}
+                  FCFA 
+                  </div>
+            </div>
+  
+          </div>
+  
+  
+          <div class="flex flex-col gap-2 rounded-md shadow-md bg-[#FCFCFC] py-5 ">
+            <div class="px-4 text-center font-semibold">INFORMATIONS DE LIVRAISON</div>
+            <p-divider></p-divider>
+            <div class="flex flex-col px-4">
+              <div class="text-gray-400">Nom a mettre sur la facture</div>
+              <div >{{leNom}}</div>
+            </div>
+            <div class="flex flex-col px-4">
+              <div class="text-gray-400">Contact</div>
+              <div >{{contact}}</div>
+            </div>
+            <div class="flex flex-col px-4">
+              <div class="text-gray-400">Lieu de Livraison</div>
+              <div >{{selectedVille?.name}}</div>
+            </div>
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
+  
+   
+  
+    <ng-template #footer>
+        <div class="flex flex-col w-full gap-4">
+            <div class="flex flex-col " *ngIf="cpt==2">
+                <div class="font-semibold text-center text-xs">Paiement a la livraison</div>
+                <div class="text-[#0074FF] text-center text-xs">Vous serez livré {{getTimeLabel()}} </div>
+            </div>
+            <div class="flex w-full">
+                <!-- <p-button [disabled]="cpt==0" [style]="{'color': '#FF9700'}" (click)="gereCompteur(-1)" label="Précédent"  [rounded]="true" [text]="true"  styleClass=""  /> -->
+               <div class="w-full">
+                <p-button
+               [disabled]="itemForm.invalid"
+                *ngIf="cpt==2" [loading]="loading" label="Valider la commande" (click)="handleOk()" [rounded]="true" styleClass="" [style]="{'width':'100%', 'background': '#FF9700' , 'border-color': '#FF9700'}" />
+                <p-button
+                [disabled]="
+                leNom=='' || leNom == null || selectedVille == null || contact == null || contact == '' ? true : false 
+                 "
+                *ngIf="cpt<2" label="Suivant"
+                 (click)="produit.product.colors != null || produit.product.sizes != null ? gereCompteur(1) : gereCompteur(2)" 
+                 [rounded]="true" styleClass="" [style]="{'width':'100%', 'background': '#FF9700' , 'border-color': '#FF9700'}" />
+               </div>
+                
+            </div>
+        </div>
+      
+    </ng-template>
+  </p-drawer>
+  <p-toast />

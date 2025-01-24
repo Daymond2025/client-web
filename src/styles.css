@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+.p-drawer-bottom{
+    height: 90% !important;
+}
+
+.p-drawer-title{
+    font-size: 16px !important;
+    text-align: center !important;
+}
+
+.p-inputtext , .p-select {
+    border-color : transparent !important;
+    border-bottom: 1px #FF9700 solid !important;
+}
+
+.p-floatlabel label , .p-select-label.p-placeholder{
+    color: #8d8d8d !important;
+    font-weight: 700 !important;
+}
+
+.p-drawer-header{
+    padding-left: 0px !important;
+}
+
+.ledivider{.p-divider-horizontal{
+    margin: 0px !important;
+}}

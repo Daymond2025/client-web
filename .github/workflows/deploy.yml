@@ -25,12 +25,12 @@ jobs:
         run: npm run build -- --configuration=production
 
       - name: 🚀 Déployer via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: sebastianpopp/ftp-action@v1
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: "dist/daymond_client/browser/"  # Remplace par le bon dossier
+          ftp-server: ${{ secrets.FTP_SERVER }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/daymond_client/browser/  # Remplace par le bon dossier
          # server-dir: "/sites/test.daymondboutique.com/"  # Remplace par ton dossier de production sur le serveur
           remote-dir: /sites/test.daymondboutique.com  # Le répertoire distant de ton serveur
 

@@ -1,0 +1,34 @@
+name: Deploy Angular via FTP
+
+on:
+  push:
+    branches:
+      - master  # Change en 'master' si nécessaire
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Cloner le dépôt
+        uses: actions/checkout@v3
+
+      - name: 🔧 Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18  # Change selon ta version Angular
+
+      - name: 📦 Installer les dépendances
+        run: npm install
+
+      - name: 🔨 Build du projet Angular
+        run: npm run build -- --configuration=production
+
+      - name: 🚀 Déployer via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: "dist/daymond_client/browser/"  # Remplace par le bon dossier
+          server-dir: "/sites/test.daymondboutique.com/"  # Remplace par ton dossier de production sur le serveur

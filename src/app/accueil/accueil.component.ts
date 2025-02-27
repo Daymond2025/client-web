@@ -126,6 +126,9 @@ text: any;
     }
 
     replaceText(text: any) {
+      if (!text) {
+        return ''; // Ou toute autre valeur par défaut
+      }
       return text.replace(/\r\n|\n/g, '</br>')
     }
 
@@ -150,6 +153,12 @@ getTimeLabel(): string {
   }
 
   return 'demain avant 12h';
+}
+
+openLink(lien:any) {
+  if (lien) {
+    window.open(lien, '_blank');
+  }
 }
 
 
@@ -186,6 +195,8 @@ getTimeLabel(): string {
     res.city_id = res.city_id.id
     res.price = this.produit.price
     res.seller_id=this.idSeller
+    res.commission = this.produit.commission
+    res.color = res.color.name
     console.log('envoie',res)
     this.add(res)
   }
@@ -216,6 +227,7 @@ getTimeLabel(): string {
         this.utilisService.response(data, (d:any) => {
           console.log('produit',d)
           this.produit=d.data;
+          this.couleurs = this.produit.product.colors
           // this.title.setTitle('Détails du produit');
           // this.meta.updateTag({ name: 'og:image', content: this.produit.product.images[0] });
           this.meta.updateTag({ name: 'og:type', content: 'product.item' });

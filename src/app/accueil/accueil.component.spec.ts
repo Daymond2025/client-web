@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {provideHttpClientTesting, HttpClientTestingModule } from '@angular/common/http/testing'
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { AccueilComponent } from './accueil.component';
+
+
 
 describe('AccueilComponent', () => {
   let component: AccueilComponent;
@@ -8,7 +12,16 @@ describe('AccueilComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccueilComponent]
+      imports: [AccueilComponent,HttpClientTestingModule],
+      providers:[
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParamMap: of({ get: (key: string) => '123' }) // Simule queryParamMap
+
+          }
+        }
+      ]
     })
     .compileComponents();
 

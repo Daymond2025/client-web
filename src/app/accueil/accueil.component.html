@@ -44,7 +44,11 @@
 
     <div class="flex gap-5 justify-between w-full">
       <div class="flex-none">
-        <a [href]="'tel:+225'+produit?.phone_number"><p-button icon="pi pi-phone" aria-label="Save" severity="info" [rounded]="true" styleClass="" /></a>
+        <!-- <a [href]="'tel:+225'+produit?.phone_number"> -->
+          <p-button 
+          (click)="openLink('tel:+225'+produit?.phone_number)"
+          icon="pi pi-phone" aria-label="Save" severity="info" [rounded]="true" styleClass="" />
+        <!-- </a> -->
         
       </div>
     
@@ -53,9 +57,11 @@
       </div>
     
       <div class="flex-none">
-        <a [href]="'https://wa.me/+225' + produit?.phone_number" target="_blank">
-          <p-button icon="pi pi-whatsapp" aria-label="Save" [rounded]="true" styleClass="" [style]="{ 'background': '#00a884' , 'border-color': '#00a884'}" />
-        </a>
+        <!-- <a [href]="'https://wa.me/+225' + produit?.phone_number" target="_blank"> -->
+          <p-button
+          (click)="openLink('https://wa.me/+225' + produit?.phone_number)"
+          icon="pi pi-whatsapp" aria-label="Save" [rounded]="true" styleClass="" [style]="{ 'background': '#00a884' , 'border-color': '#00a884'}" />
+        <!-- </a> -->
         
       </div>
     </div>
@@ -133,16 +139,18 @@
   
           
   
-            <p-select [options]="couleurs"
+            <p-select *ngIf="produit?.product?.colors" [options]="couleurs"
             [(ngModel)]="selectedCouleur"
               formControlName="color" 
               [filter]="true" 
+              filterBy="name"
+              optionLabel="name"
                 [showClear]="true"
                 placeholder="Quelle couleur voulez-vous ?" 
                 class="w-full md:w-56">
           </p-select> 
   
-          <p-select [options]="tailles"
+          <p-select  *ngIf="produit?.product?.sizes" [options]="tailles"
             [(ngModel)]="selectedTaille"
               formControlName="size" 
               [filter]="true" 
@@ -182,7 +190,7 @@
   
             <div class="flex justify-between">
               <div class="text-gray-400">Couleur</div>
-              <div>{{selectedCouleur}}</div>
+              <div>{{selectedCouleur?.name}}</div>
             </div>
   
             <div class="flex justify-between">

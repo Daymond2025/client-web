@@ -25,15 +25,11 @@ jobs:
         run: npm run build -- --configuration=production
 
       - name: 🚀 Déployer via FTP
-        uses: sebastianpopp/ftp-action@v1
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/daymond_client/browser/  # Remplace par le bon dossier
-         # server-dir: "/sites/test.daymondboutique.com/"  # Remplace par ton dossier de production sur le serveur
-          remote-dir: /sites/test.daymondboutique.com  # Le répertoire distant de ton serveur
-
-          # Crée un dossier de sauvegarde avec la date et déplace les anciens fichiers
-          remote-backup-dir: /sites/test.daymondboutique.com/backup/$(date +%Y-%m-%d_%H-%M-%S)  # Dossier de backup avec timestamp
-          backup: true  # Utilise ce paramètre pour déplacer les fichiers dans un dossier de backup avant le déploiement
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: "dist/daymond_client/browser/"  # Remplace par le bon dossier
+          server-dir: "/sites/test.daymondboutique.com/"  # Remplace par ton dossier de production sur le serveur
+          

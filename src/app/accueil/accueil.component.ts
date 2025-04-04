@@ -101,11 +101,11 @@ text: any;
         // console.log('le atob ',atob(String('YWJlbA==')))
         
         if (data) {
-          // console.log('la data : ',data)
+          console.log('la data : ',data)
           // Exemple de décryptage en Base64 (ou toute autre méthode utilisée)
           try {
             const decodedId = atob(data); // Décoder les données Base64
-            // console.log('ID Décodé:',JSON.parse(decodedId) );
+            console.log('ID Décodé:',JSON.parse(decodedId) );
             const leJson = JSON.parse(decodedId)
             this.idSeller = leJson.idSeller
             // console.log('id du seller :',this.idSeller)
@@ -167,7 +167,7 @@ openLink(lien:any) {
     this.itemForm = this.fb.group({
       person:"client",
       // brand:['' ,[]],
-      product_id:[fv && fv.product_id ? fv.product_id : '' ,[]],
+      product_id:[fv && fv.id ? fv.id : '' ,[]],
       city_id:[fv && fv.city_id ? fv.city_id : '' ,[Validators.required]],
       name:[fv && fv.name ? fv.name : '' ,[Validators.required]],
       phone_number:[fv && fv.phone_number ? fv.phone_number : '' ,[Validators.required]],
@@ -191,7 +191,7 @@ openLink(lien:any) {
   handleOk() {
     this.loading=true
     let res = this.itemForm.value;
-    res.product_id = this.produit.product.id
+    res.product_id = this.produit.id
     res.city_id = res.city_id.id
     res.price = this.produit.price
     res.seller_id=this.idSeller

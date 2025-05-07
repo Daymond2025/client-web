@@ -197,6 +197,9 @@ openLink(lien:any) {
     res.seller_id=this.idSeller
     res.commission = this.produit.commission
     res.color = res.color.name
+    res.fees = this.selectedVille?.name === "Abidjan"
+    ? this.produit?.product?.price_delivery?.city
+    : this.produit?.product?.price_delivery?.no_city;
     console.log('envoie',res)
     this.add(res)
   }

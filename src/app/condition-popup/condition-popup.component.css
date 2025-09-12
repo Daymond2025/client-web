@@ -1,0 +1,101 @@
+/* Fond sombre derrière le pop-up */
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Carte centrale */
+.popup-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 30px 20px;
+  width: 85%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/* Image ronde en haut (WhatsApp, avatar, install) */
+.popup-image img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  margin: 0 auto 15px auto;
+  display: block;
+}
+
+/* Titres */
+.popup-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+/* Sous-titres */
+.popup-subtitle {
+  font-size: 15px;
+  font-weight: 400;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.4em;
+}
+
+/* Groupe de champ */
+.popup-input-group {
+  margin-bottom: 20px;
+}
+
+/* Champ avec drapeau + indicatif */
+.phone-container {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #ddd;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: #f9f9f9;
+}
+
+.flag-icon {
+  width: 26px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.phone-prefix {
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 8px;
+  color: #333;
+}
+
+.popup-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+}
+
+/* Bouton flèche */
+.popup-action {
+  margin-top: 10px;
+}
+
+.popup-arrow {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.popup-arrow:hover {
+  transform: translateY(3px);
+}

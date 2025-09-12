@@ -1,57 +1,70 @@
 <div class="popup-overlay">
   <div class="popup-card">
-    
-    <!-- Image principale -->
-    <div class="popup-image">
-      <img [src]="imageSrc" alt="icon" />
-    </div>
-
-    <!-- Bloc WhatsApp -->
-    <div *ngIf="type === 'whatsapp'">
+    <!-- WhatsApp -->
+    <ng-container *ngIf="type === 'whatsapp'">
+      <div class="popup-circle">
+        <img [src]="imageSrc" alt="WhatsApp" />
+      </div>
       <h3 class="popup-title">Restons en contact</h3>
       <p class="popup-subtitle">Quel est ton numéro WhatsApp ?</p>
 
-      <div class="popup-input-group">
-        <div class="phone-container">
-          <img src="assets/drapeau.png" alt="ci" class="flag-icon" />
-          <span class="phone-prefix">+225</span>
-          <input 
-            type="tel" 
-            [(ngModel)]="value" 
-            placeholder="Entrez votre numéro WhatsApp"
-            class="popup-input" 
-          />
-        </div>
+      <div class="phone-container">
+        <img src="assets/drapeau.png" alt="ci" class="flag-icon" />
+        <span class="phone-prefix">+225</span>
+        <input
+          type="tel"
+          [(ngModel)]="value"
+          placeholder="Entre le numéro WhatsApp"
+          class="popup-input"
+        />
       </div>
-    </div>
+    </ng-container>
 
-    <!-- Bloc Nom complet -->
-    <div *ngIf="type === 'fullname'">
+    <!-- Nom complet -->
+    <ng-container *ngIf="type === 'fullname'">
+      <div class="popup-circle">
+        <img [src]="imageSrc" alt="avatar" />
+      </div>
       <h3 class="popup-title">Faisons connaissance</h3>
       <p class="popup-subtitle">Quel est ton nom ?</p>
 
       <div class="popup-input-group">
-        <input 
-          type="text" 
-          [(ngModel)]="value" 
-          placeholder="Entrez votre nom complet"
-          class="popup-input" 
+        <input
+          type="text"
+          [(ngModel)]="value"
+          placeholder="Entre ton nom complet"
+          class="popup-input"
         />
       </div>
-    </div>
+    </ng-container>
 
-    <!-- Bloc Install -->
-    <div *ngIf="type === 'install'">
-      <h2 class="popup-title">Daymond</h2>
-      <p class="popup-subtitle">
-        Est déjà installée sur votre téléphone ?<br />
-        Cliquez ici pour ouvrir.
-      </p>
-    </div>
+    <!-- Install -->
+    <ng-container *ngIf="type === 'install'">
+      <div class="popup-install">
+        <img [src]="imageSrc" alt="Daymond" class="popup-install-logo" />
+        <div class="popup-install-texts">
+          <h3 class="popup-install-title">Daymond</h3>
+          <p class="popup-install-subtitle">
+            Est déjà installée sur votre téléphone<br />
+            cliquez ici pour ouvrir
+          </p>
+        </div>
+        <img
+          src="assets/arrow-down.png"
+          alt="ouvrir"
+          class="popup-install-arrow"
+          (click)="onSubmit()"
+        />
+      </div>
+    </ng-container>
 
-    <!-- Flèche -->
-    <div class="popup-action" (click)="onSubmit()">
-      <img src="assets/icons/arrow-down.png" alt="Valider" class="popup-arrow" />
+    <!-- Flèche pour valider (WhatsApp / fullname uniquement) -->
+    <div *ngIf="type !== 'install'" class="popup-action" (click)="onSubmit()">
+      <img
+        src="assets/arrow-down.png"
+        alt="Valider"
+        class="popup-arrow"
+      />
     </div>
   </div>
 </div>

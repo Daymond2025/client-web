@@ -7,17 +7,37 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './condition-popup.component.html',
-  styleUrls: ['./condition-popup.component.css']
+  styleUrls: ['./condition-popup.component.css'],
 })
 export class ConditionPopupComponent {
-  @Input() imageSrc: string = '';  // Image du haut (WhatsApp, avatar, install)
+  /** Logo affiché en haut (WhatsApp, avatar, ou install) */
+  @Input() imageSrc: string = '';
+
+  /** Type de pop-up (définit le rendu visuel et le texte) */
   @Input() type: 'whatsapp' | 'fullname' | 'install' = 'whatsapp';
 
+  /** Placeholder pour le champ de saisie */
+  @Input() placeholder: string = '';
+
+  /** Valeur saisie par l’utilisateur */
   value: string = '';
 
+  /** Événement renvoyé quand l’utilisateur valide */
   @Output() submit = new EventEmitter<string>();
 
+  //** Lien vers le popup install */
+  @Input() installLink: string = ''; // lien pour le popup install
+
   onSubmit() {
+    if (this.type === 'install' && this.installLink) {
+      // Redirection vers le lien (téléchargement / ouverture app)
+      window.location.href = this.installLink;
+    }
     this.submit.emit(this.value.trim());
+  }
+
+  /** Réinitialiser le champ après envoi */
+  reset() {
+    this.value = '';
   }
 }

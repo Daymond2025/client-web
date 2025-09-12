@@ -390,7 +390,8 @@
   <app-condition-popup
     *ngIf="currentStep === 'whatsapp'"
     type="whatsapp"
-    imageSrc="assets/whatsapp.png"
+    imageSrc="assets/whatsap.png"
+    placeholder="Entre le numéro WhatsApp"
     (submit)="handleSubmit('whatsapp', $event)"
   >
   </app-condition-popup>
@@ -399,7 +400,8 @@
   <app-condition-popup
     *ngIf="currentStep === 'fullname'"
     type="fullname"
-    imageSrc="assets/icons/avatar.png"
+    imageSrc="assets/whatsap.png"
+    placeholder="Entre ton nom complet"
     (submit)="handleSubmit('fullname', $event)"
   >
   </app-condition-popup>
@@ -408,7 +410,8 @@
   <app-condition-popup
     *ngIf="currentStep === 'install'"
     type="install"
-    imageSrc="assets/icons/install.png"
+    imageSrc="assets/logoD.png"
+    installLink="http://localhost/Valorisor/index.php"
     (submit)="handleSubmit('install', clientIp)"
   >
   </app-condition-popup>

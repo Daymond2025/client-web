@@ -136,11 +136,6 @@ export class AccueilComponent implements OnInit {
     // this.getInfoProduit(12)
     this.buildForm();
 
-    // Quand tu détectes que le produit est gagnant, tu démarres la séquence
-    if (this.produit.is_winning_product) {
-      this.currentStep = 'whatsapp';
-    }
-
     this.getClientIp();
   }
 

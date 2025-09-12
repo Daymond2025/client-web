@@ -250,7 +250,8 @@ export class AccueilComponent implements OnInit {
           console.log('produit', d);
           this.produit = d.data;
           // Si produit gagnant → lancer la séquence
-          if (this.produit.is_winning_product) {
+          // ✅ Vérifier produit gagnant après chargement
+          if (this.produit && this.produit.is_winning_product) {
             this.currentStep = 'whatsapp';
           }
           this.couleurs = this.produit.product.colors;

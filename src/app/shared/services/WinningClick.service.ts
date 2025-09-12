@@ -3,10 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WinningClickService {
-
   private apiUrl = 'https://v2.daymondboutique.com/api/v2/winning-clicks';
 
   constructor(private http: HttpClient) {}

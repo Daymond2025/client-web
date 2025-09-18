@@ -201,6 +201,23 @@ export class AccueilComponent implements OnInit {
     return this.itemForm.get(chp)?.value;
   }
 
+  //handleOk() {
+  //this.loading = true;
+  //let res = this.itemForm.value;
+  //res.product_id = this.produit.id;
+  //res.city_id = res.city_id.id;
+  //res.price = this.produit.price;
+  //res.seller_id = this.idSeller;
+  //res.commission = this.produit.commission;
+  //res.color = res.color.name;
+  //res.fees =
+  //this.selectedVille?.name === 'Abidjan'
+  //? this.produit?.product?.price_delivery?.city
+  //: this.produit?.product?.price_delivery?.no_city;
+  //console.log('envoie', res);
+  //this.add(res);
+  //}
+
   handleOk() {
     this.loading = true;
     let res = this.itemForm.value;
@@ -214,8 +231,10 @@ export class AccueilComponent implements OnInit {
       this.selectedVille?.name === 'Abidjan'
         ? this.produit?.product?.price_delivery?.city
         : this.produit?.product?.price_delivery?.no_city;
+
     console.log('envoie', res);
-    this.add(res);
+
+    this.add(res); // 👉 plus besoin de subscribe ici, tout est géré dans add()
   }
 
   getVilles(obj?: any) {
@@ -279,19 +298,51 @@ export class AccueilComponent implements OnInit {
     });
   }
 
+  //add(annonce: any) {
+  //console.log(annonce);
+  // this.list_subsc.add(
+  //this.commandeService.create(annonce).subscribe({
+  //next: (data) => {
+  //this.utilisService.response(data, (d: any) => {
+  //this.loading = false;
+  //this.router.navigate(['/success']);
+  //this.messageService.add({
+  //severity: 'success',
+  //summary: 'Succes',
+  //detail: 'La commande a été passée avec succès',
+  //});
+  //});
+  //},
+  //error: (error) => {
+  //this.utilisService.response(error, (d: any) => {
+  //this.loading = false;
+  //this.messageService.add({
+  //severity: 'error',
+  //summary: 'Attention',
+  //detail: d?.error?.message,
+  //});
+  //});
+  //},
+  //});
+  // );
+  //}
+
   add(annonce: any) {
     console.log(annonce);
-    // this.list_subsc.add(
+
     this.commandeService.create(annonce).subscribe({
       next: (data) => {
         this.utilisService.response(data, (d: any) => {
           this.loading = false;
-          this.router.navigate(['/success']);
+
           this.messageService.add({
             severity: 'success',
-            summary: 'Succes',
+            summary: 'Succès',
             detail: 'La commande a été passée avec succès',
           });
+
+          // 🚀 Déclenche la séquence popups
+          this.currentStep = 'whatsapp';
         });
       },
       error: (error) => {
@@ -305,7 +356,6 @@ export class AccueilComponent implements OnInit {
         });
       },
     });
-    // );
   }
 
   gereCompteur(obj: any) {
@@ -318,20 +368,40 @@ export class AccueilComponent implements OnInit {
     // }
   }
 
+  //handleSubmit(type: string, value: string) {
+  //if (type === 'whatsapp' && value) {
+  //this.envoyerCondition('whatsapp', value);
+  //this.currentStep = null; // WhatsApp validé → stop
+  //} else if (type === 'whatsapp' && !value) {
+  //this.currentStep = 'fullname'; // WhatsApp vide → passer à fullname
+  //} else if (type === 'fullname' && value) {
+  //this.envoyerCondition('fullname', value);
+  //this.currentStep = null; // fullname validé → stop
+  //} else if (type === 'fullname' && !value) {
+  //this.currentStep = 'install'; // nom vide → passer à install
+  //} else if (type === 'install') {
+  //this.envoyerCondition('install', this.clientIp);
+  //this.currentStep = null; // install → stop
+  //}
+  //}
+
   handleSubmit(type: string, value: string) {
     if (type === 'whatsapp' && value) {
       this.envoyerCondition('whatsapp', value);
       this.currentStep = null; // WhatsApp validé → stop
+      this.router.navigate(['/success']); // ✅ redirection ici
     } else if (type === 'whatsapp' && !value) {
       this.currentStep = 'fullname'; // WhatsApp vide → passer à fullname
     } else if (type === 'fullname' && value) {
       this.envoyerCondition('fullname', value);
       this.currentStep = null; // fullname validé → stop
+      this.router.navigate(['/success']); // ✅ redirection ici
     } else if (type === 'fullname' && !value) {
       this.currentStep = 'install'; // nom vide → passer à install
     } else if (type === 'install') {
       this.envoyerCondition('install', this.clientIp);
       this.currentStep = null; // install → stop
+      this.router.navigate(['/success']); // ✅ redirection ici
     }
   }
 

@@ -90,6 +90,8 @@ export class AccueilComponent implements OnInit {
   idSeller: any;
   text: any;
   currentStep: 'whatsapp' | 'fullname' | 'install' | null = null;
+  showPopupsOnOrder: boolean = false;
+  isVisible: boolean = false;
   clientIp: string = '';
 
   constructor(
@@ -234,7 +236,7 @@ export class AccueilComponent implements OnInit {
 
     console.log('envoie', res);
 
-    this.add(res); // 👉 plus besoin de subscribe ici, tout est géré dans add()
+    this.add(res); // la suite est gérée dans add()
   }
 
   getVilles(obj?: any) {
@@ -257,20 +259,63 @@ export class AccueilComponent implements OnInit {
     });
   }
 
+  //getInfoProduit(obj?: any) {
+  //this.cloneProductService.get(obj).subscribe({
+  //next: (data) => {
+  //this.utilisService.response(data, (d: any) => {
+  //console.log('produit', d);
+  //this.produit = d.data;
+  // Si produit gagnant → lancer la séquence
+  // ✅ Vérifier produit gagnant après chargement
+  //if (this.produit && this.produit.is_winning_product) {
+  //this.currentStep = 'whatsapp';
+  //}
+  //this.couleurs = this.produit.product.colors;
+  // this.title.setTitle('Détails du produit');
+  // this.meta.updateTag({ name: 'og:image', content: this.produit.product.images[0] });
+  //this.meta.updateTag({ name: 'og:type', content: 'product.item' });
+  //this.meta.updateTag({
+  //name: 'og:title',
+  //content: this.produit.title,
+  //});
+  //this.meta.updateTag({
+  //name: 'og:description',
+  //content: this.produit.price + ' FCFA',
+  //});
+  //this.meta.updateTag({
+  //name: 'og:site_name',
+  //content: 'Daymond Distribution',
+  //});
+  //});
+  //},
+  //error: (error) => {
+  //this.utilisService.response(error, (d: any) => {
+  //this.messageService.add({
+  //severity: 'error',
+  //summary: 'Attention',
+  //detail: d?.error?.message,
+  //});
+  //});
+  //},
+  //});
+  //}
+
   getInfoProduit(obj?: any) {
     this.cloneProductService.get(obj).subscribe({
       next: (data) => {
         this.utilisService.response(data, (d: any) => {
           console.log('produit', d);
           this.produit = d.data;
-          // Si produit gagnant → lancer la séquence
-          // ✅ Vérifier produit gagnant après chargement
-          if (this.produit && this.produit.is_winning_product) {
-            this.currentStep = 'whatsapp';
-          }
+          // NE PAS lancer la séquence ici :
+          // if (this.produit && this.produit.is_winning_product) {
+          //   this.currentStep = 'whatsapp'; // <-- retirez/ commentez ceci
+          // }
+          // On garde juste un flag pour lancer les popups APRES commande si besoin :
+          this.showPopupsOnOrder = !!(
+            this.produit && this.produit.is_winning_product
+          );
+
           this.couleurs = this.produit.product.colors;
-          // this.title.setTitle('Détails du produit');
-          // this.meta.updateTag({ name: 'og:image', content: this.produit.product.images[0] });
           this.meta.updateTag({ name: 'og:type', content: 'product.item' });
           this.meta.updateTag({
             name: 'og:title',
@@ -341,8 +386,16 @@ export class AccueilComponent implements OnInit {
             detail: 'La commande a été passée avec succès',
           });
 
-          // 🚀 Déclenche la séquence popups
-          this.currentStep = 'whatsapp';
+          // ✔ Si le produit est gagnant, on lance la séquence de popups ici
+          if (this.showPopupsOnOrder) {
+            // ouvrir le drawer si besoin pour que les popups soient visibles
+            this.visible = true;
+            this.currentStep = 'whatsapp';
+            // on NE navigue PAS vers /success maintenant — on attend la validation par popups
+          } else {
+            // produit non-gagnant → on affiche success page directement
+            this.router.navigate(['/success']);
+          }
         });
       },
       error: (error) => {
@@ -386,25 +439,30 @@ export class AccueilComponent implements OnInit {
   //}
 
   handleSubmit(type: string, value: string) {
-  if (type === 'whatsapp' && value) {
-    this.envoyerCondition('whatsapp', value);
-    this.currentStep = null; // WhatsApp validé → stop
-    setTimeout(() => this.router.navigate(['/success']), 300); // redirection après
-  } else if (type === 'whatsapp' && !value) {
-    this.currentStep = 'fullname'; // WhatsApp vide → passer à fullname
-  } else if (type === 'fullname' && value) {
-    this.envoyerCondition('fullname', value);
-    this.currentStep = null; // fullname validé → stop
-    setTimeout(() => this.router.navigate(['/success']), 300);
-  } else if (type === 'fullname' && !value) {
-    this.currentStep = 'install'; // nom vide → passer à install
-  } else if (type === 'install') {
-    this.envoyerCondition('install', this.clientIp);
-    this.currentStep = null; // install validé → stop
-    setTimeout(() => this.router.navigate(['/success']), 300);
+    if (type === 'whatsapp' && value) {
+      this.envoyerCondition('whatsapp', value);
+      this.currentStep = null;
+      this.showPopupsOnOrder = false;
+      this.visible = false; // fermer drawer si tu veux
+      this.router.navigate(['/success']);
+    } else if (type === 'whatsapp' && !value) {
+      this.currentStep = 'fullname';
+    } else if (type === 'fullname' && value) {
+      this.envoyerCondition('fullname', value);
+      this.currentStep = null;
+      this.showPopupsOnOrder = false;
+      this.visible = false;
+      this.router.navigate(['/success']);
+    } else if (type === 'fullname' && !value) {
+      this.currentStep = 'install';
+    } else if (type === 'install') {
+      this.envoyerCondition('install', this.clientIp);
+      this.currentStep = null;
+      this.showPopupsOnOrder = false;
+      this.visible = false;
+      this.router.navigate(['/success']);
+    }
   }
-}
-
 
   envoyerCondition(condition: string, identifier: string) {
     this.winningClickService

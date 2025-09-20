@@ -5,8 +5,9 @@
   background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
-  align-items: center;
   z-index: 2000;
+  align-items: flex-start; /* au lieu de center */
+  padding-top: 80px; /* espace haut pour bien voir le cercle */
 }
 
 /* Carte blanche */
@@ -21,6 +22,7 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   border-bottom: 6px solid #00b043; /* ligne verte en bas */
+  margin-top: 40px; /* ajoute un espace entre haut écran et pop-up */
 }
 
 /* Cercle vert avec icône */
@@ -32,8 +34,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: -60px auto 15px auto;
+  margin: -40px auto 20px auto; /* réduit le -60px à -40px et augmente l’espace bas */
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  
 }
 
 .popup-circle-inner {

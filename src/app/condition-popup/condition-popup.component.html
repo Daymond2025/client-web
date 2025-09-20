@@ -1,9 +1,12 @@
 <div class="popup-overlay">
   <div class="popup-card">
     <!-- WhatsApp -->
+    <!-- WhatsApp -->
     <ng-container *ngIf="type === 'whatsapp'">
-      <div class="popup-circle">
-        <img [src]="imageSrc" alt="WhatsApp" />
+      <div class="popup-circle-outer">
+        <div class="popup-circle-inner">
+          <img [src]="imageSrc" alt="WhatsApp" />
+        </div>
       </div>
       <h3 class="popup-title">Restons en contact</h3>
       <p class="popup-subtitle">Quel est ton numéro WhatsApp ?</p>
@@ -21,9 +24,12 @@
     </ng-container>
 
     <!-- Nom complet -->
+    <!-- Nom complet -->
     <ng-container *ngIf="type === 'fullname'">
-      <div class="popup-circle">
-        <img [src]="imageSrc" alt="avatar" />
+      <div class="popup-circle-outer">
+        <div class="popup-circle-inner">
+          <img [src]="imageSrc" alt="avatar" />
+        </div>
       </div>
       <h3 class="popup-title">Faisons connaissance</h3>
       <p class="popup-subtitle">Quel est ton nom ?</p>
@@ -60,11 +66,7 @@
 
     <!-- Flèche pour valider (WhatsApp / fullname uniquement) -->
     <div *ngIf="type !== 'install'" class="popup-action" (click)="onSubmit()">
-      <img
-        src="assets/arrow-down.png"
-        alt="Valider"
-        class="popup-arrow"
-      />
+      <img src="assets/arrow-down.png" alt="Valider" class="popup-arrow" />
     </div>
   </div>
 </div>
